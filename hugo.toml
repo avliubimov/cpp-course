@@ -1,0 +1,19 @@
+baseURL = 'https://твой-username.github.io/cpp-course/'
+title = 'Курс C++'
+theme = 'book'
+
+[languages]
+  [languages.ru]
+    locale = 'ru_RU'
+    label = 'Русский'
+    contentDir = 'content'
+
+[params]
+  BookTheme = 'light'
+  BookToC = true
+  BookSection = 'docs'
+  BookSearch = true
+  BookMath = true
+
+[markup.goldmark.renderer]
+  unsafe = true
