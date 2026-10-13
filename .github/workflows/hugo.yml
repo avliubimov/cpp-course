@@ -60,13 +60,21 @@ jobs:
 
       - name: Generate ZIP archives for students
         run: |
-          mkdir -p static/downloads
+          # Используем абсолютный путь — так надёжнее, не зависит от cd
+          DOWNLOADS_DIR="$GITHUB_WORKSPACE/static/downloads"
+          mkdir -p "$DOWNLOADS_DIR"
+
           for lab_dir in src/labs/*/; do
-            lab_name=$(basename "$lab_dir")
-            echo "Creating ZIP for: $lab_name"
-            # Мы заходим внутрь папки (cd), чтобы в ZIP попали файлы, а не сама папка src/labs/01-basics/
-            (cd "$lab_dir" && zip -r "../../static/downloads/${lab_name}.zip" .)
+            if [ -d "$lab_dir" ]; then
+              lab_name=$(basename "$lab_dir")
+              echo "Creating ZIP for: $lab_name"
+              # Заходим в папку лабы и архивируем её содержимое
+              (cd "$lab_dir" && zip -r "$DOWNLOADS_DIR/${lab_name}.zip" .)
+            fi
           done
+
+          echo "Generated ZIP files:"
+          ls -la "$DOWNLOADS_DIR"
 
       - name: Setup Pages
         id: pages
